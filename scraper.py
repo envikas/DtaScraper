@@ -27,10 +27,10 @@ for i in range (0, last_page_num):
         # Removing the last useless link
         if ("//" not in link.get('href')):
             html_link = "https://marketplace.service.gov.au" + link.get('href')
-            master_text += get_text(html_link)
+            page_text = get_text(html_link)
+            master_text += page_text
             links.append(html_link)
 
-print (links)
 
 # Store the master text in file
 with io.open("Master_text.txt", "w", encoding="utf-8") as f:
