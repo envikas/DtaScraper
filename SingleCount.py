@@ -8,11 +8,11 @@ import operator
 links = []
 
 # Getting all pagination links
-html_page = urllib2.urlopen("https://marketplace.service.gov.au/digital-marketplace/opportunities?page=1")
+html_page = urllib2.urlopen("https://www.digitalmarketplace.service.gov.uk/digital-outcomes-and-specialists/opportunities?page=1&lot=digital-specialists")
 soup = BeautifulSoup(html_page, "html5lib")
 # Getting the last page number
-last_page_num = int(soup.find("div", class_="pagination").find("div").find_all("strong")[1].contents[0])
-
+page_num = soup.find("span", class_="page-numbers").contents
+last_page_num = int(page_num[0][-2:])
 print("Number of pages:", last_page_num)
 
 master_text = ""
@@ -22,7 +22,7 @@ keywords = ""
 department_frequency = {}
 # Looping across all pages and getting links
 for i in range (0, last_page_num):
-    html_page = urllib2.urlopen("https://marketplace.service.gov.au/digital-marketplace/opportunities?page=" + str(i+1) )
+    html_page = urllib2.urlopen("https://www.digitalmarketplace.service.gov.uk/digital-outcomes-and-specialists/opportunities?page=" + str(i+1) + "&lot=digital-specialists")
     soup = BeautifulSoup(html_page, "html5lib")
     # All the job titles are under a h2 heading, so getting all those links from the page
     for link in soup.select('h2 a[href]'):
@@ -30,12 +30,13 @@ for i in range (0, last_page_num):
         print(count)
         # Removing the last useless link
         if ("//" not in link.get('href')):
-            html_link = "https://marketplace.service.gov.au" + link.get('href')
+            html_link = "https://www.digitalmarketplace.service.gov.uk" + link.get('href')
 
             # Get a list of most actively hiring departments
             html_sub_page = urllib2.urlopen(html_link)
             soup2 = BeautifulSoup(html_sub_page, "html5lib")
-            department = str(soup2.find_all("div",class_="grid-row")[1].find("div").find_all("dl")[1].find_all("dd")[4].find("span").contents[0])
+            department = str(soup2.find_all("div",class_="grid-row")[2].find("div").find_all("table")[1].find("tbody").find_all("tr")[5].find_all("td")[1].find("span").contents[0])
+            print(department)
             if department not in department_frequency.keys():
                 department_frequency[department] = 1
             else:

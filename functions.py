@@ -6,9 +6,9 @@ def get_text(link):
     text = ""
     html_page = urllib2.urlopen(link)
     soup = BeautifulSoup(html_page, "html5lib")
-    num_of_grid_rows = len(soup.find("article", class_="content-main").find_all("div", class_="grid-row"))
+    num_of_grid_rows = len(soup.find_all("div",class_="grid-row")[2].find("div").find_all("table")[5].find("tbody").find("tr").find_all("td")[1].find("span").find("ul").find_all("li"))
     for i in range(0, num_of_grid_rows):
-        text += soup.find("article", class_="content-main").find_all("div", class_="grid-row")[i].get_text()
+        text += soup.find_all("div",class_="grid-row")[2].find("div").find_all("table")[5].find("tbody").find("tr").find_all("td")[1].find("span").find("ul").find_all("li")[i].get_text()
     return text
 
 

@@ -8,17 +8,18 @@ import io
 links = []
 
 # Getting all pagination links
-html_page = urllib2.urlopen("https://marketplace.service.gov.au/digital-marketplace/opportunities?page=1")
+html_page = urllib2.urlopen("https://www.digitalmarketplace.service.gov.uk/digital-outcomes-and-specialists/opportunities?page=1&lot=digital-specialists")
 soup = BeautifulSoup(html_page, "html5lib")
 # Getting the last page number
-last_page_num = int(soup.find("div", class_="pagination").find("div").find_all("strong")[1].contents[0])
+page_num = soup.find("span", class_="page-numbers").contents
+last_page_num = int(page_num[0][-2:])
 print("Number of pages:", last_page_num)
 
 master_text = ""
 count = 0
 # Looping across all pages and getting links
 for i in range (0, last_page_num):
-    html_page = urllib2.urlopen("https://marketplace.service.gov.au/digital-marketplace/opportunities?page=" + str(i+1) )
+    html_page = urllib2.urlopen("https://www.digitalmarketplace.service.gov.uk/digital-outcomes-and-specialists/opportunities?page=" + str(i+1) + "&lot=digital-specialists")
     soup = BeautifulSoup(html_page, "html5lib")
     # All the job titles are under a h2 heading, so getting all those links from the page
     for link in soup.select('h2 a[href]'):
