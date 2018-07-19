@@ -2,18 +2,52 @@ from bs4 import BeautifulSoup
 import urllib.request as urllib2
 import operator
 
-def get_text(link):
+def get_text(link, gridRows):
     text = ""
     html_page = urllib2.urlopen(link)
     soup = BeautifulSoup(html_page, "html5lib")
-    num_of_grid_rows = len(soup.find_all("div",class_="grid-row")[2].find("div").find_all("table")[5].find("tbody").find("tr").find_all("td")[1].find("span").find("ul").find_all("li"))
-    for i in range(0, num_of_grid_rows):
-        text += soup.find_all("div",class_="grid-row")[2].find("div").find_all("table")[5].find("tbody").find("tr").find_all("td")[1].find("span").find("ul").find_all("li")[i].get_text()
-    return text
+    # Getting essential skills and experience
+    # Checking if the skills list is empty
+    if not soup.find_all("div",class_="grid-row")[gridRows].find("div").find_all("table")[5].find("tbody").find("tr").find_all("td")[1].find("span"):
+        text += "NA"
+    # Checking if the skills are in a list or not
+    elif (soup.find_all("div",class_="grid-row")[gridRows].find("div").find_all("table")[5].find("tbody").find("tr").find_all("td")[1].find("span").find("ul")):
+        num_of_grid_rows = len(soup.find_all("div",class_="grid-row")[gridRows].find("div").find_all("table")[5].find("tbody").find("tr").find_all("td")[1].find("span").find("ul").find_all("li"))
+        for i in range(0, num_of_grid_rows):
+            text += soup.find_all("div",class_="grid-row")[gridRows].find("div").find_all("table")[5].find("tbody").find("tr").find_all("td")[1].find("span").find("ul").find_all("li")[i].get_text()
+    # No list, just a span, then do this:
+    else:
+        text += soup.find_all("div", class_="grid-row")[gridRows].find("div").find_all("table")[5].find("tbody").find(
+            "tr").find_all("td")[1].find("span").get_text()
+
+    # Getting nice-to-have skills and experience
+    # Checking if the skills list is empty
+    if not soup.find_all("div", class_="grid-row")[gridRows].find("div").find_all("table")[5].find("tbody").find_all(
+            "tr")[1].find_all("td")[1].find("span"):
+        text += "NA"
+        return text
+    # Checking if the skills are in a list or not
+    elif (soup.find_all("div", class_="grid-row")[gridRows].find("div").find_all("table")[5].find("tbody").find_all(
+            "tr")[1].find_all("td")[1].find("span").find("ul")):
+        num_of_grid_rows = len(
+            soup.find_all("div", class_="grid-row")[gridRows].find("div").find_all("table")[5].find("tbody").find_all(
+                "tr")[1].find_all("td")[1].find("span").find("ul").find_all("li"))
+        for i in range(0, num_of_grid_rows):
+            text += \
+            soup.find_all("div", class_="grid-row")[gridRows].find("div").find_all("table")[5].find("tbody").find_all(
+                "tr")[1].find_all("td")[1].find("span").find("ul").find_all("li")[i].get_text()
+        return text
+    # No list, just a span, then do this:
+    else:
+        text += soup.find_all("div", class_="grid-row")[gridRows].find("div").find_all("table")[5].find("tbody").find_all(
+            "tr")[1].find_all("td")[1].find("span").get_text()
+        return text
+
+
 
 
 # Test of get_text
-# get_text("https://marketplace.service.gov.au/digital-service-professionals/opportunities/255")
+# print(get_text("https://www.digitalmarketplace.service.gov.uk/digital-outcomes-and-specialists/opportunities/7119", 3))
 
 
 import re
@@ -90,7 +124,7 @@ class NgramBuilder(object):
         counter = Counter()
         builder = NgramBuilder()
         ngramLength = 3
-        print("Finding N-Grams up to " + str(ngramLength) + " words")
+        # print("Finding N-Grams up to " + str(ngramLength) + " words")
 
         for i in range(1, ngramLength + 1):
             counter.add(builder.find_ngrams(text, i))

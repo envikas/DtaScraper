@@ -20,6 +20,7 @@ count = 0
 terms = {}
 keywords = ""
 department_frequency = {}
+gridRows = 2
 # Looping across all pages and getting links
 for i in range (0, last_page_num):
     html_page = urllib2.urlopen("https://www.digitalmarketplace.service.gov.uk/digital-outcomes-and-specialists/opportunities?page=" + str(i+1) + "&lot=digital-specialists")
@@ -27,7 +28,7 @@ for i in range (0, last_page_num):
     # All the job titles are under a h2 heading, so getting all those links from the page
     for link in soup.select('h2 a[href]'):
         count +=1
-        print(count)
+        print("Count: " + str(count))
         # Removing the last useless link
         if ("//" not in link.get('href')):
             html_link = "https://www.digitalmarketplace.service.gov.uk" + link.get('href')
@@ -35,7 +36,13 @@ for i in range (0, last_page_num):
             # Get a list of most actively hiring departments
             html_sub_page = urllib2.urlopen(html_link)
             soup2 = BeautifulSoup(html_sub_page, "html5lib")
-            department = str(soup2.find_all("div",class_="grid-row")[2].find("div").find_all("table")[1].find("tbody").find_all("tr")[5].find_all("td")[1].find("span").contents[0])
+            if (len(soup2.find_all("div",class_="grid-row")[2].find("div").find_all("table")) > 0):
+                gridRows = 2
+                department = str(soup2.find_all("div",class_="grid-row")[2].find("div").find_all("table")[1].find("tbody").find_all("tr")[5].find_all("td")[1].find("span").contents[0])
+            else:
+                gridRows = 3
+                department = str(soup2.find_all("div",class_="grid-row")[3].find("div").find_all("table")[1].find("tbody").find_all("tr")[5].find_all("td")[1].find("span").contents[0])
+
             print(department)
             if department not in department_frequency.keys():
                 department_frequency[department] = 1
@@ -43,8 +50,8 @@ for i in range (0, last_page_num):
                 department_frequency[department] += 1
 
             # Read contents of the job page
-            
-            page_text = get_text(html_link)
+
+            page_text = get_text(html_link, gridRows)
             terms_in_link = NgramBuilder.ngramExtractor(NgramBuilder,page_text)
             no_of_keywords_in_link = len(terms_in_link)
             list_of_terms = list(terms_in_link)

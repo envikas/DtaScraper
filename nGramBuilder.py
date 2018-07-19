@@ -9,7 +9,7 @@ with open('Master_text.txt', 'r', encoding="utf-8") as myfile:
 counter = functions.Counter()
 builder = functions.NgramBuilder()
 ngramLength = 3
-print("Finding N-Grams up to " + str(ngramLength) + " words")
+# print("Finding N-Grams up to " + str(ngramLength) + " words")
 
 for i in range (1 , ngramLength+1):
     counter.add(builder.find_ngrams(text, i))
