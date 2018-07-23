@@ -54,10 +54,12 @@ for i in range (0, last_page_num):
                     terms[list_of_terms[j][0]] += 1
 
 # Get ngram result in CSV format
+required_terms = ["oracle", "javascript", "machine learning", "sql", "mysql", "nosql", "hadoop", "cobol", "foxtran", "r", "matlab", "tensorflow", "php", "spring framework", "pharmcis", "qi", "angularjs", "no-sql", "mainframe", "jira", "trello", "automation", "artificial intelligence" , "data mining", "big data", "ibm", "watson", ".net", "dotnet", "git", "agile", "lean", "fox", "database", "cms", "wordpress", "drupal", "azure", "aws", "linux", "android", "ios", "java" ,"c", "c++", "c#", "python", "ruby", "scala", "django", "html", "css", "react", "reactjs", "reactnative", "angular"]
+
 resultList = sorted(terms.items(), key=operator.itemgetter(1), reverse=True)
 result = ""
 for j in range(0,len(resultList)):
-    if(resultList[j][1] > 1):
+    if(resultList[j][1] > 1 and resultList[j][0].lower() in required_terms):
         result += resultList[j][0] + "," + str(resultList[j][1]) + "\n"
 
 # Get your department results in a CSV format
