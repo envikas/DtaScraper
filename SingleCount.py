@@ -54,13 +54,21 @@ for i in range (0, last_page_num):
                     terms[list_of_terms[j][0]] += 1
 
 # Get ngram result in CSV format
-required_terms = ["oracle", "javascript", "machine learning", "sql", "mysql", "nosql", "hadoop", "cobol", "foxtran", "r", "matlab", "tensorflow", "php", "spring framework", "pharmcis", "qi", "angularjs", "no-sql", "mainframe", "jira", "trello", "automation", "artificial intelligence" , "data mining", "big data", "ibm", "watson", ".net", "dotnet", "git", "agile", "lean", "fox", "database", "cms", "wordpress", "drupal", "azure", "aws", "linux", "android", "ios", "java" ,"c", "c++", "c#", "python", "ruby", "scala", "django", "html", "css", "react", "reactjs", "reactnative", "angular"]
-
+required_terms = ["oracle", "windows", "windows server", "macos", "mac os", "osx" "os x", "unix", "sql server", "swift", "javascript", "machine learning", "sql", "mysql", "nosql", "hadoop", "cobol", "foxtran", "r", "matlab", "tensorflow", "php", "spring framework", "pharmcis", "qi", "angularjs", "no-sql", "mainframe", "jira", "trello", "automation", "artificial intelligence" , "data mining", "big data", "ibm", "watson", ".net", "dotnet", "git", "agile", "lean", "fox", "database", "cms", "wordpress", "drupal", "azure", "aws", "linux", "android", "ios", "java" ,"c", "c++", "c#", "python", "ruby", "scala", "django", "html", "css", "react", "reactjs", "reactnative", "angular"]
+roles_terms = ["manager","business analyst", "engineer", "software engineer", "lawyer", "architect", "lead", "scrum master", "software developer", "programmer", "secretary"]
+platform_terms = ["aws","linux","azure", "ibm","microsoft server", "unix"]
 resultList = sorted(terms.items(), key=operator.itemgetter(1), reverse=True)
 result = ""
+roles_result = ""
+platform_result =""
+
 for j in range(0,len(resultList)):
     if(resultList[j][1] > 1 and resultList[j][0].lower() in required_terms):
         result += resultList[j][0] + "," + str(resultList[j][1]) + "\n"
+    if (resultList[j][1] > 1 and resultList[j][0].lower() in roles_terms):
+        roles_result += resultList[j][0] + "," + str(resultList[j][1]) + "\n"
+    if (resultList[j][1] > 1 and resultList[j][0].lower() in platform_terms):
+        platform_result += resultList[j][0] + "," + str(resultList[j][1]) + "\n"
 
 # Get your department results in a CSV format
 departmentResultsList = sorted(department_frequency.items(), key=operator.itemgetter(1), reverse=True)
@@ -70,10 +78,19 @@ for j in range(0,len(departmentResultsList)):
         departmentResult += departmentResultsList[j][0] + "," + str(departmentResultsList[j][1]) + "\n"
 
 # Store the master text in file
-with io.open("Single_Count.csv", "w", encoding="utf-8") as f:
+with io.open("Single_Count_uk.csv", "w", encoding="utf-8") as f:
     f.write(result)
     f.close()
 
-with io.open("Department_Frequency.csv", "w", encoding="utf-8") as f:
+with io.open("Roles_Count_uk.csv", "w", encoding="utf-8") as f:
+    f.write(roles_result)
+    f.close()
+
+with io.open("Platform_Count_uk.csv", "w", encoding="utf-8") as f:
+    f.write(platform_result)
+    f.close()
+
+
+with io.open("Department_Frequency_uk.csv", "w", encoding="utf-8") as f:
     f.write(departmentResult)
     f.close()
