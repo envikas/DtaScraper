@@ -78,19 +78,19 @@ for j in range(0,len(departmentResultsList)):
         departmentResult += departmentResultsList[j][0] + "," + str(departmentResultsList[j][1]) + "\n"
 
 # Store the master text in file
-with io.open("Single_Count_uk.csv", "w", encoding="utf-8") as f:
+with io.open("Single_Count_aus.csv", "w", encoding="utf-8") as f:
     f.write(result)
     f.close()
 
-with io.open("Roles_Count_uk.csv", "w", encoding="utf-8") as f:
+with io.open("Roles_Count_aus.csv", "w", encoding="utf-8") as f:
     f.write(roles_result)
     f.close()
 
-with io.open("Platform_Count_uk.csv", "w", encoding="utf-8") as f:
+with io.open("Platform_Count_aus.csv", "w", encoding="utf-8") as f:
     f.write(platform_result)
     f.close()
 
 
-with io.open("Department_Frequency_uk.csv", "w", encoding="utf-8") as f:
+with io.open("Department_Frequency_aus.csv", "w", encoding="utf-8") as f:
     f.write(departmentResult)
     f.close()
